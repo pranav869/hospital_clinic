@@ -235,6 +235,46 @@
       transition: all .15s;
     }
     .btn-signout:hover { border-color: var(--red); color: var(--red); }
+    .btn-changepw {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all .15s;
+      margin-bottom: 6px;
+    }
+    .btn-changepw:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* ── MODAL ─────────────────────────────────────── */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.6);
+      z-index: 50;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-backdrop.show { display: flex; }
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 24px 60px rgba(0,0,0,.5);
+    }
+    .modal-title { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+    .modal-sub { font-size: 12px; color: var(--muted); margin-bottom: 24px; }
+    .modal-actions { display: flex; gap: 8px; margin-top: 20px; }
+    .modal-actions .btn-primary { flex: 1; margin-top: 0; }
+    .modal-actions .btn-ghost { flex: 1; margin-top: 0; }
 
     main {
       margin-left: var(--sidebar);
@@ -531,6 +571,7 @@
       <div class="user-chip">
         <div class="user-email" id="userEmail">—</div>
       </div>
+      <button class="btn-changepw" onclick="openChangePw()">Change Password</button>
       <button class="btn-signout" onclick="handleLogout()">Sign Out</button>
     </div>
   </aside>
@@ -619,6 +660,27 @@
   </main>
 </div>
 
+<!-- ── CHANGE PASSWORD MODAL ──────────────────────────────── -->
+<div class="modal-backdrop" id="changePwModal">
+  <div class="modal">
+    <div class="modal-title">Change Password</div>
+    <div class="modal-sub">Enter and confirm your new password</div>
+    <div class="form-group">
+      <label>New Password</label>
+      <input type="password" id="newPwInput" placeholder="Min. 6 characters" autocomplete="new-password" />
+    </div>
+    <div class="form-group">
+      <label>Confirm New Password</label>
+      <input type="password" id="confirmPwInput" placeholder="Repeat new password" autocomplete="new-password" />
+    </div>
+    <p class="reset-msg" id="changePwMsg"></p>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeChangePw()">Cancel</button>
+      <button class="btn-primary" id="changePwBtn" onclick="handleChangePw()">Update Password</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -657,13 +719,23 @@
     }
   }
 
-  async function handleLogout() {
-    await db.auth.signOut();
-    document.getElementById('app').style.display  = 'none';
+  function resetToLogin() {
+    document.getElementById('app').style.display = 'none';
     document.getElementById('loginScreen').style.display = 'flex';
     document.getElementById('loginBtn').disabled = false;
     document.getElementById('loginBtn').textContent = 'Sign In';
+    document.getElementById('loginError').textContent = '';
+    document.getElementById('emailInput').value = '';
+    document.getElementById('passwordInput').value = '';
+    document.getElementById('resetCard').style.display = 'none';
+    document.querySelector('.login-card').style.display = 'block';
+    closeChangePw();
     all = [];
+  }
+
+  async function handleLogout() {
+    await db.auth.signOut();
+    resetToLogin();
   }
 
   function showDashboard(user) {
@@ -674,7 +746,7 @@
   }
 
   db.auth.onAuthStateChange((event) => {
-    if (event === 'SIGNED_OUT') handleLogout();
+    if (event === 'SIGNED_OUT') resetToLogin();
   });
 
   // ── Data ───────────────────────────────────────────────────────
@@ -813,6 +885,54 @@
     t.className   = `show ${type}`;
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => { t.className = ''; }, 3000);
+  }
+
+  // ── Change Password ───────────────────────────────────────────
+  function openChangePw() {
+    closeSidebar();
+    document.getElementById('newPwInput').value = '';
+    document.getElementById('confirmPwInput').value = '';
+    document.getElementById('changePwMsg').textContent = '';
+    document.getElementById('changePwMsg').className = 'reset-msg';
+    document.getElementById('changePwBtn').disabled = false;
+    document.getElementById('changePwBtn').textContent = 'Update Password';
+    document.getElementById('changePwModal').classList.add('show');
+  }
+
+  function closeChangePw() {
+    document.getElementById('changePwModal').classList.remove('show');
+  }
+
+  async function handleChangePw() {
+    const newPw     = document.getElementById('newPwInput').value;
+    const confirmPw = document.getElementById('confirmPwInput').value;
+    const btn       = document.getElementById('changePwBtn');
+    const msg       = document.getElementById('changePwMsg');
+
+    if (newPw.length < 6) {
+      msg.textContent = 'Password must be at least 6 characters';
+      msg.className = 'reset-msg error'; return;
+    }
+    if (newPw !== confirmPw) {
+      msg.textContent = 'Passwords do not match';
+      msg.className = 'reset-msg error'; return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Updating…';
+    msg.textContent = '';
+
+    const { error } = await db.auth.updateUser({ password: newPw });
+    btn.disabled = false;
+    btn.textContent = 'Update Password';
+
+    if (error) {
+      msg.textContent = error.message;
+      msg.className = 'reset-msg error';
+    } else {
+      closeChangePw();
+      showToast('Password updated successfully', 'success');
+    }
   }
 
   // ── Mobile Sidebar ────────────────────────────────────────────
