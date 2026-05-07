@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Astera Admin — Appointments</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #21262d;
+      --surface3: #30363d;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --teal: #14b8a6;
+      --teal-hover: #0d9488;
+      --green: #3fb950;
+      --yellow: #e3b341;
+      --red: #f85149;
+      --sidebar: 220px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── LOGIN ─────────────────────────────────────── */
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at 30% 40%, rgba(20,184,166,.1) 0%, transparent 55%),
+                  radial-gradient(ellipse at 70% 70%, rgba(14,165,233,.07) 0%, transparent 50%);
+    }
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 44px 40px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 24px 60px rgba(0,0,0,.5);
+    }
+    .login-logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--teal);
+      letter-spacing: -.3px;
+    }
+    .login-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 36px;
+      margin-top: 4px;
+    }
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+    .form-group input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .form-group input:focus { border-color: var(--teal); }
+    .btn-primary {
+      width: 100%;
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      padding: 11px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+      margin-top: 4px;
+    }
+    .btn-primary:hover { background: var(--teal-hover); }
+    .btn-primary:disabled { opacity: .55; cursor: not-allowed; }
+    .forgot-link {
+      display: block;
+      text-align: right;
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      margin-top: -8px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      transition: color .15s;
+    }
+    .forgot-link:hover { color: var(--teal); }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+    .btn-ghost {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 9px;
+      padding: 10px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .15s;
+      margin-top: 4px;
+    }
+    .btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+    .reset-msg { font-size: 13px; text-align: center; min-height: 20px; margin-top: 10px; }
+    .reset-msg.success { color: var(--green); }
+    .reset-msg.error   { color: var(--red);   }
+    .login-error {
+      color: var(--red);
+      font-size: 13px;
+      margin-top: 12px;
+      text-align: center;
+      min-height: 20px;
+    }
+
+    /* ── APP LAYOUT ────────────────────────────────── */
+    #app { display: none; min-height: 100vh; }
+
+    aside {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--sidebar);
+      height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      z-index: 20;
+    }
+    .sidebar-logo {
+      padding: 22px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-logo .name { font-size: 15px; font-weight: 700; color: var(--teal); }
+    .sidebar-logo .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    .sidebar-nav { padding: 12px 10px; flex: 1; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .15s;
+      user-select: none;
+    }
+    .nav-item:hover { background: var(--surface2); color: var(--text); }
+    .nav-item.active { background: rgba(20,184,166,.12); color: var(--teal); }
+    .nav-icon { width: 16px; height: 16px; flex-shrink: 0; }
+
+    .sidebar-bottom {
+      padding: 12px 10px;
+      border-top: 1px solid var(--border);
+    }
+    .user-chip {
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: var(--surface2);
+      margin-bottom: 8px;
+    }
+    .user-email { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .btn-signout {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .btn-signout:hover { border-color: var(--red); color: var(--red); }
+
+    main {
+      margin-left: var(--sidebar);
+      padding: 32px 36px;
+      min-height: 100vh;
+    }
+    .page-header { margin-bottom: 28px; }
+    .page-title { font-size: 22px; font-weight: 700; letter-spacing: -.3px; }
+    .page-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    /* ── STATS ─────────────────────────────────────── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      border-radius: 3px 0 0 3px;
+    }
+    .stat-card.teal::after { background: var(--teal); }
+    .stat-card.yellow::after { background: var(--yellow); }
+    .stat-card.green::after { background: var(--green); }
+    .stat-card.slate::after { background: #60a5fa; }
+    .stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 10px; }
+    .stat-value { font-size: 30px; font-weight: 700; line-height: 1; }
+    .stat-card.teal .stat-value { color: var(--teal); }
+    .stat-card.yellow .stat-value { color: var(--yellow); }
+    .stat-card.green .stat-value { color: var(--green); }
+    .stat-card.slate .stat-value { color: #60a5fa; }
+
+    /* ── FILTERS ───────────────────────────────────── */
+    .filter-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .filter-bar input,
+    .filter-bar select {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 12px;
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .filter-bar input:focus, .filter-bar select:focus { border-color: var(--teal); }
+    .filter-bar input[type="text"] { flex: 1; min-width: 220px; }
+    .filter-bar select option { background: var(--surface2); }
+    .btn-icon {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 7px 13px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .btn-icon:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* ── TABLE ─────────────────────────────────────── */
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .table-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .table-top-title { font-size: 14px; font-weight: 600; }
+    .table-count { font-size: 12px; color: var(--muted); }
+    .table-scroll { overflow-x: auto; }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      padding: 10px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--muted);
+      text-align: left;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    tbody tr {
+      border-bottom: 1px solid rgba(48,54,61,.6);
+      transition: background .1s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--surface2); }
+    td {
+      padding: 11px 16px;
+      font-size: 13px;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .td-bold { font-weight: 600; }
+    .td-muted { color: var(--muted); }
+    .td-phone a { color: var(--teal); text-decoration: none; }
+    .td-phone a:hover { text-decoration: underline; }
+
+    /* Status select */
+    .status-select {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 4px 8px;
+      color: var(--text);
+      font-size: 12px;
+      cursor: pointer;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .status-select:focus { border-color: var(--teal); }
+
+    /* Delete button */
+    .btn-del {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--muted);
+      border-radius: 7px;
+      padding: 4px 9px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .btn-del:hover { border-color: var(--red); color: var(--red); background: rgba(248,81,73,.08); }
+
+    /* Empty / Loading */
+    .state-center { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 13px; }
+
+    /* ── TOAST ─────────────────────────────────────── */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-size: 13px;
+      z-index: 999;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .2s, transform .2s;
+      pointer-events: none;
+      max-width: 320px;
+    }
+    #toast.show { opacity: 1; transform: translateY(0); }
+    #toast.success { border-color: var(--green); color: var(--green); }
+    #toast.error   { border-color: var(--red);   color: var(--red);   }
+    #toast.info    { border-color: var(--teal);  color: var(--teal);  }
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN ─────────────────────────────────────────── -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">Astera Admin</div>
+    <div class="login-sub">Clinic Booking Management</div>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="emailInput" placeholder="admin@asteraclinic.in" required autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="passwordInput" placeholder="••••••••" required autocomplete="current-password" />
+      </div>
+      <button class="btn-primary" id="loginBtn" type="submit">Sign In</button>
+      <p class="login-error" id="loginError"></p>
+    </form>
+    <hr class="divider" />
+    <button class="btn-ghost" onclick="showReset()">Forgot password?</button>
+  </div>
+
+  <!-- Reset Password View -->
+  <div class="login-card" id="resetCard" style="display:none;margin-top:16px;">
+    <div class="login-logo" style="font-size:16px">Reset Password</div>
+    <div class="login-sub">We&#39;ll send a reset link to your email</div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="resetEmail" placeholder="admin@asteraclinic.in" autocomplete="email" />
+    </div>
+    <button class="btn-primary" id="resetBtn" onclick="handleReset()">Send Reset Link</button>
+    <p class="reset-msg" id="resetMsg"></p>
+    <hr class="divider" />
+    <button class="btn-ghost" onclick="hideReset()">← Back to Sign In</button>
+  </div>
+</div>
+
+<!-- ── APP ───────────────────────────────────────────── -->
+<div id="app">
+  <aside>
+    <div class="sidebar-logo">
+      <div class="name">Astera Clinic</div>
+      <div class="sub">Admin Panel</div>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" href="#">
+        <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <path d="M16 2v4M8 2v4M3 10h18"/>
+        </svg>
+        Appointments
+      </a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-chip">
+        <div class="user-email" id="userEmail">—</div>
+      </div>
+      <button class="btn-signout" onclick="handleLogout()">Sign Out</button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="page-header">
+      <div class="page-title">Appointments</div>
+      <div class="page-sub">View and manage all patient booking requests</div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card teal">
+        <div class="stat-label">Total Bookings</div>
+        <div class="stat-value" id="statTotal">—</div>
+      </div>
+      <div class="stat-card slate">
+        <div class="stat-label">Today</div>
+        <div class="stat-value" id="statToday">—</div>
+      </div>
+      <div class="stat-card yellow">
+        <div class="stat-label">Pending</div>
+        <div class="stat-value" id="statPending">—</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-label">Confirmed</div>
+        <div class="stat-value" id="statConfirmed">—</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-bar">
+      <input type="text" id="filterSearch" placeholder="🔍  Search by name or phone…" oninput="applyFilters()" />
+      <select id="filterDept" onchange="applyFilters()">
+        <option value="">All Departments</option>
+        <option>Cardiology</option>
+        <option>Dermatology</option>
+        <option>General Medicine</option>
+        <option>Orthopaedics</option>
+        <option>Paediatrics</option>
+        <option>ENT</option>
+      </select>
+      <select id="filterStatus" onchange="applyFilters()">
+        <option value="">All Status</option>
+        <option value="pending">Pending</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+      <input type="date" id="filterDate" onchange="applyFilters()" title="Filter by appointment date" />
+      <button class="btn-icon" onclick="loadAppointments()">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+        </svg>
+        Refresh
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+      <div class="table-top">
+        <div class="table-top-title">Booking Requests</div>
+        <div class="table-count" id="tableCount"></div>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Department</th>
+              <th>Appt. Date</th>
+              <th>Time</th>
+              <th>Status</th>
+              <th>Booked On</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td colspan="9" class="state-center">Loading appointments…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  // ── CONFIG — replace these two values ──────────────────────────
+  const SUPABASE_URL     = 'https://nnwlqboymzkwxdxehosv.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_jf4ZpbHslvaz5uTlLUuISA_CKbpnhvh';
+  // ──────────────────────────────────────────────────────────────
+
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  let all = [];
+
+  // ── Auth ───────────────────────────────────────────────────────
+  async function checkAuth() {
+    const { data: { session } } = await db.auth.getSession();
+    if (session) showDashboard(session.user);
+  }
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    const email    = document.getElementById('emailInput').value.trim();
+    const password = document.getElementById('passwordInput').value;
+    const btn      = document.getElementById('loginBtn');
+    const errEl    = document.getElementById('loginError');
+
+    btn.disabled = true;
+    btn.textContent = 'Signing in…';
+    errEl.textContent = '';
+
+    const { data, error } = await db.auth.signInWithPassword({ email, password });
+    if (error) {
+      errEl.textContent = error.message;
+      btn.disabled = false;
+      btn.textContent = 'Sign In';
+    } else {
+      showDashboard(data.user);
+    }
+  }
+
+  async function handleLogout() {
+    await db.auth.signOut();
+    document.getElementById('app').style.display  = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('loginBtn').disabled = false;
+    document.getElementById('loginBtn').textContent = 'Sign In';
+    all = [];
+  }
+
+  function showDashboard(user) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    document.getElementById('userEmail').textContent = user.email;
+    loadAppointments();
+  }
+
+  db.auth.onAuthStateChange((event) => {
+    if (event === 'SIGNED_OUT') handleLogout();
+  });
+
+  // ── Data ───────────────────────────────────────────────────────
+  async function loadAppointments() {
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = '<tr><td colspan="9" class="state-center">Loading…</td></tr>';
+
+    const { data, error } = await db
+      .from('appointments')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      tbody.innerHTML = `<tr><td colspan="9" class="state-center" style="color:var(--red)">
+        Error loading data: ${esc(error.message)}
+      </td></tr>`;
+      return;
+    }
+
+    all = data || [];
+    renderStats(all);
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const search = document.getElementById('filterSearch').value.toLowerCase();
+    const dept   = document.getElementById('filterDept').value;
+    const status = document.getElementById('filterStatus').value;
+    const date   = document.getElementById('filterDate').value;
+
+    const filtered = all.filter(a => {
+      if (search && !a.full_name?.toLowerCase().includes(search) && !a.phone?.includes(search)) return false;
+      if (dept   && a.department !== dept)   return false;
+      if (status && a.status     !== status) return false;
+      if (date   && a.preferred_date !== date) return false;
+      return true;
+    });
+
+    renderTable(filtered);
+  }
+
+  function renderStats(data) {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('statTotal').textContent     = data.length;
+    document.getElementById('statToday').textContent     = data.filter(a => a.created_at?.startsWith(today)).length;
+    document.getElementById('statPending').textContent   = data.filter(a => a.status === 'pending').length;
+    document.getElementById('statConfirmed').textContent = data.filter(a => a.status === 'confirmed').length;
+  }
+
+  function renderTable(data) {
+    document.getElementById('tableCount').textContent = `${data.length} record${data.length !== 1 ? 's' : ''}`;
+    const tbody = document.getElementById('tableBody');
+
+    if (!data.length) {
+      tbody.innerHTML = '<tr><td colspan="9" class="state-center">No appointments found</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = data.map((a, i) => `
+      <tr>
+        <td class="td-muted">${i + 1}</td>
+        <td class="td-bold">${esc(a.full_name)}</td>
+        <td class="td-phone"><a href="tel:${esc(a.phone)}">${esc(a.phone)}</a></td>
+        <td>${esc(a.department)}</td>
+        <td>${fmtDate(a.preferred_date)}</td>
+        <td class="td-muted">${fmtTime(a.preferred_time)}</td>
+        <td>
+          <select class="status-select" onchange="updateStatus('${a.id}', this.value)">
+            <option value="pending"   ${a.status === 'pending'   ? 'selected' : ''}>🟡 Pending</option>
+            <option value="confirmed" ${a.status === 'confirmed' ? 'selected' : ''}>🟢 Confirmed</option>
+            <option value="cancelled" ${a.status === 'cancelled' ? 'selected' : ''}>🔴 Cancelled</option>
+          </select>
+        </td>
+        <td class="td-muted">${fmtDateTime(a.created_at)}</td>
+        <td>
+          <button class="btn-del" onclick="deleteRow('${a.id}', '${esc(a.full_name).replace(/'/g, "\\'")}')">Delete</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  // ── Actions ────────────────────────────────────────────────────
+  async function updateStatus(id, status) {
+    const { error } = await db.from('appointments').update({ status }).eq('id', id);
+    if (error) {
+      showToast('Failed to update status', 'error');
+    } else {
+      const item = all.find(a => a.id === id);
+      if (item) item.status = status;
+      renderStats(all);
+      showToast(`Marked as ${status}`, 'success');
+    }
+  }
+
+  async function deleteRow(id, name) {
+    if (!confirm(`Delete appointment for "${name}"?\nThis cannot be undone.`)) return;
+    const { error } = await db.from('appointments').delete().eq('id', id);
+    if (error) {
+      showToast('Delete failed', 'error');
+    } else {
+      all = all.filter(a => a.id !== id);
+      renderStats(all);
+      applyFilters();
+      showToast('Appointment deleted', 'info');
+    }
+  }
+
+  // ── Helpers ────────────────────────────────────────────────────
+  function esc(s) {
+    return String(s ?? '')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function fmtDate(d) {
+    if (!d) return '—';
+    return new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+  }
+
+  function fmtTime(t) {
+    if (!t) return '—';
+    const [h, m] = t.split(':');
+    const hr = parseInt(h);
+    return `${hr % 12 || 12}:${m} ${hr < 12 ? 'AM' : 'PM'}`;
+  }
+
+  function fmtDateTime(dt) {
+    if (!dt) return '—';
+    return new Date(dt).toLocaleString('en-IN', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit', hour12: true });
+  }
+
+  let toastTimer;
+  function showToast(msg, type = 'info') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className   = `show ${type}`;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { t.className = ''; }, 3000);
+  }
+
+  // ── Reset Password ────────────────────────────────────────────
+  function showReset() {
+    document.querySelector('.login-card').style.display = 'none';
+    document.getElementById('resetCard').style.display = 'block';
+    document.getElementById('resetMsg').textContent = '';
+    document.getElementById('resetMsg').className = 'reset-msg';
+    document.getElementById('resetEmail').value = document.getElementById('emailInput').value;
+  }
+
+  function hideReset() {
+    document.getElementById('resetCard').style.display = 'none';
+    document.querySelector('.login-card').style.display = 'block';
+  }
+
+  async function handleReset() {
+    const email = document.getElementById('resetEmail').value.trim();
+    const btn   = document.getElementById('resetBtn');
+    const msg   = document.getElementById('resetMsg');
+    if (!email) { msg.textContent = 'Enter your email address'; msg.className = 'reset-msg error'; return; }
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    msg.textContent = '';
+    const { error } = await db.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/admin/index.html'
+    });
+    btn.disabled = false;
+    btn.textContent = 'Send Reset Link';
+    if (error) {
+      msg.textContent = error.message;
+      msg.className = 'reset-msg error';
+    } else {
+      msg.textContent = '✓ Reset link sent! Check your email.';
+      msg.className = 'reset-msg success';
+    }
+  }
+
+  // ── Init ───────────────────────────────────────────────────────
+  checkAuth();
+</script>
+</body>
+</html>

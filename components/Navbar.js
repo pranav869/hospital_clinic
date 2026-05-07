@@ -6,13 +6,13 @@ import { Menu, PhoneCall, X } from 'lucide-react';
 import { clinicInfo } from '@/data/siteData';
 
 const links = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
-  { href: '/services', label: 'Services' },
-  { href: '/doctors', label: 'Doctors' },
-  { href: '/appointment', label: 'Appointment' },
-  { href: '/testimonials', label: 'Testimonials' },
-  { href: '/contact', label: 'Contact' }
+  { href: '/#home', label: 'Home' },
+  { href: '/#about', label: 'About' },
+  { href: '/#services', label: 'Services' },
+  { href: '/#doctors', label: 'Doctors' },
+  { href: '/#appointment', label: 'Appointment' },
+  { href: '/#testimonials', label: 'Testimonials' },
+  { href: '/#contact', label: 'Contact' }
 ];
 
 export default function Navbar() {
@@ -21,7 +21,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-sky-100/80 bg-white/90 backdrop-blur-lg">
       <div className="main-container flex h-16 sm:h-20 items-center justify-between">
-        <Link href="/" className="text-base sm:text-lg font-semibold tracking-tight text-slate-900">
+        <Link href="/#home" className="text-base sm:text-lg font-semibold tracking-tight text-slate-900">
           Astera <span className="gradient-text">Clinic</span>
         </Link>
 

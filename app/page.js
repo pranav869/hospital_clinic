@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, BadgeCheck, ShieldCheck, Users } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Clock3, Mail, MapPinned, PhoneCall, ShieldCheck, Users } from 'lucide-react';
 import FadeIn from '@/components/FadeIn';
 import SectionHeading from '@/components/SectionHeading';
 import ServiceIcon from '@/components/ServiceIcon';
@@ -11,7 +11,8 @@ import { clinicInfo, doctors, specialities, testimonials, blogPosts } from '@/da
 export default function HomePage() {
   return (
     <>
-      <section className="bg-hero-glow border-b border-sky-100">
+      <div id="home" className="scroll-mt-24" />
+      <section id="about" className="scroll-mt-24 bg-hero-glow border-b border-sky-100">
         <div className="main-container grid items-center gap-6 py-12 sm:gap-8 sm:py-16 lg:grid-cols-2 lg:gap-10 lg:py-24">
           <FadeIn>
             <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-sky-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
@@ -43,7 +44,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="main-container py-12 sm:py-16 lg:py-20">
+      <section id="services" className="scroll-mt-24 main-container py-12 sm:py-16 lg:py-20">
         <SectionHeading
           eyebrow="Specialities"
           title="Complete care under one trusted roof"
@@ -62,7 +63,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-sky-50/60 py-12 sm:py-16 lg:py-20">
+      <section id="doctors" className="scroll-mt-24 bg-sky-50/60 py-12 sm:py-16 lg:py-20">
         <div className="main-container">
           <SectionHeading
             eyebrow="Expert Team"
@@ -79,7 +80,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="main-container py-12 sm:py-16 lg:py-20">
+      <section id="testimonials" className="scroll-mt-24 main-container py-12 sm:py-16 lg:py-20">
         <SectionHeading
           eyebrow="Patient Stories"
           title="Trusted by families across Chennai"
@@ -96,7 +97,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="border-y border-sky-100 bg-gradient-to-r from-teal-600 to-sky-500 py-10 sm:py-12 lg:py-14 text-white">
+      <section id="appointment" className="scroll-mt-24 border-y border-sky-100 bg-gradient-to-r from-teal-600 to-sky-500 py-10 sm:py-12 lg:py-14 text-white">
         <div className="main-container grid items-center gap-6 grid-cols-1 lg:grid-cols-[1.3fr_1fr]">
           <div>
             <h2 className="text-2xl sm:text-3xl font-semibold">Prioritize your health with specialist-led care today</h2>
@@ -132,6 +133,33 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      <section id="contact" className="scroll-mt-24 bg-sky-50/60 py-12 sm:py-16 lg:py-20">
+        <div className="main-container">
+          <SectionHeading
+            eyebrow="Contact"
+            title="Visit our Chennai clinic"
+            description="Conveniently located in Nungambakkam with easy appointment support on call and WhatsApp."
+          />
+          <div className="grid gap-6 sm:gap-8 grid-cols-1 lg:grid-cols-[1fr_1.5fr]">
+            <FadeIn className="glass-card space-y-4 p-6">
+              <ContactRow icon={MapPinned} text={clinicInfo.address} />
+              <ContactRow icon={PhoneCall} text={clinicInfo.phone} link={clinicInfo.phoneLink} />
+              <ContactRow icon={Mail} text={clinicInfo.email} link={`mailto:${clinicInfo.email}`} />
+              <ContactRow icon={Clock3} text={clinicInfo.timings} />
+            </FadeIn>
+            <FadeIn delay={0.08} className="overflow-hidden rounded-2xl border border-sky-100 shadow-soft">
+              <iframe
+                title="Astera Clinic Chennai Location"
+                src="https://maps.google.com/maps?q=nungambakkam%20chennai&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                className="h-72 sm:h-80 lg:h-[380px] w-full"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </FadeIn>
+          </div>
+        </div>
+      </section>
     </>
   );
 }
@@ -141,6 +169,22 @@ function TrustStat({ label, value }) {
     <div className="glass-card p-4">
       <p className="text-xs uppercase tracking-[0.16em] text-slate-500">{label}</p>
       <p className="mt-2 text-sm font-semibold text-slate-900">{value}</p>
+    </div>
+  );
+}
+
+function ContactRow({ icon: Icon, text, link }) {
+  const content = link ? (
+    <a href={link} className="text-sm leading-relaxed text-slate-700 transition hover:text-teal-700">{text}</a>
+  ) : (
+    <p className="text-sm leading-relaxed text-slate-700">{text}</p>
+  );
+  return (
+    <div className="flex items-start gap-3">
+      <span className="mt-0.5 rounded-lg bg-sky-50 p-2 text-sky-700">
+        <Icon className="h-4 w-4" />
+      </span>
+      {content}
     </div>
   );
 }

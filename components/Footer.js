@@ -12,10 +12,10 @@ export default function Footer() {
         <div>
           <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.16em] text-sky-300">Quick Links</p>
           <ul className="mt-3 sm:mt-4 space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
-            <li><Link className="transition hover:text-sky-300" href="/about">About</Link></li>
-            <li><Link className="transition hover:text-sky-300" href="/services">Services</Link></li>
-            <li><Link className="transition hover:text-sky-300" href="/doctors">Doctors</Link></li>
-            <li><Link className="transition hover:text-sky-300" href="/contact">Contact</Link></li>
+            <li><Link className="transition hover:text-sky-300" href="/#about">About</Link></li>
+            <li><Link className="transition hover:text-sky-300" href="/#services">Services</Link></li>
+            <li><Link className="transition hover:text-sky-300" href="/#doctors">Doctors</Link></li>
+            <li><Link className="transition hover:text-sky-300" href="/#contact">Contact</Link></li>
           </ul>
         </div>
         <div>
