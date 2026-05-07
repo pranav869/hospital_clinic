@@ -53,7 +53,8 @@ export default function AppointmentForm({ compact = false }) {
     setLoading(false);
 
     if (error) {
-      setSubmitError('Something went wrong. Please try WhatsApp or call us.');
+      console.error('Supabase insert error:', error);
+      setSubmitError(`Error: ${error.message}`);
     } else {
       setSuccess(true);
       setForm(initialState);

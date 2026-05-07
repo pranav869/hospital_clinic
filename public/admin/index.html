@@ -138,6 +138,41 @@
     /* ── APP LAYOUT ────────────────────────────────── */
     #app { display: none; min-height: 100vh; }
 
+    /* ── MOBILE HEADER ─────────────────────────────── */
+    .mobile-header {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 52px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 30;
+    }
+    .mobile-header .m-title { font-size: 15px; font-weight: 700; color: var(--teal); }
+    .hamburger {
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+      line-height: 0;
+    }
+    .hamburger:hover { background: var(--surface2); }
+
+    /* ── SIDEBAR OVERLAY ───────────────────────────── */
+    #sidebarOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 25;
+    }
+    #sidebarOverlay.show { display: block; }
+
     aside {
       position: fixed;
       top: 0; left: 0;
@@ -148,7 +183,8 @@
       display: flex;
       flex-direction: column;
       padding: 0;
-      z-index: 20;
+      z-index: 26;
+      transition: transform .25s ease;
     }
     .sidebar-logo {
       padding: 22px 20px;
@@ -204,6 +240,44 @@
       margin-left: var(--sidebar);
       padding: 32px 36px;
       min-height: 100vh;
+    }
+
+    /* ── RESPONSIVE ────────────────────────────────── */
+    @media (max-width: 768px) {
+      .mobile-header { display: flex; }
+
+      aside {
+        transform: translateX(-100%);
+        top: 0;
+        z-index: 26;
+      }
+      aside.open { transform: translateX(0); }
+
+      main {
+        margin-left: 0;
+        padding: 72px 16px 24px;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .stat-card { padding: 14px 16px; }
+      .stat-value { font-size: 24px; }
+
+      .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 12px;
+      }
+      .filter-bar input[type="text"] { min-width: unset; }
+      .filter-bar input,
+      .filter-bar select,
+      .btn-icon { width: 100%; justify-content: center; }
+
+      .page-title { font-size: 18px; }
+      .login-card { padding: 32px 24px; margin: 16px; }
     }
     .page-header { margin-bottom: 28px; }
     .page-title { font-size: 22px; font-weight: 700; letter-spacing: -.3px; }
@@ -426,13 +500,26 @@
 
 <!-- ── APP ───────────────────────────────────────────── -->
 <div id="app">
-  <aside>
+  <!-- Mobile top bar -->
+  <div class="mobile-header">
+    <span class="m-title">Astera Admin</span>
+    <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M3 12h18M3 6h18M3 18h18"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Sidebar overlay (tap to close on mobile) -->
+  <div id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <aside id="sidebar">
     <div class="sidebar-logo">
       <div class="name">Astera Clinic</div>
       <div class="sub">Admin Panel</div>
     </div>
     <nav class="sidebar-nav">
-      <a class="nav-item active" href="#">
+      <a class="nav-item active" href="#" onclick="closeSidebar()">
         <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <rect x="3" y="4" width="18" height="18" rx="2"/>
           <path d="M16 2v4M8 2v4M3 10h18"/>
@@ -726,6 +813,19 @@
     t.className   = `show ${type}`;
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => { t.className = ''; }, 3000);
+  }
+
+  // ── Mobile Sidebar ────────────────────────────────────────────
+  function toggleSidebar() {
+    const s = document.getElementById('sidebar');
+    const o = document.getElementById('sidebarOverlay');
+    const open = s.classList.toggle('open');
+    o.classList.toggle('show', open);
+  }
+
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('show');
   }
 
   // ── Reset Password ────────────────────────────────────────────

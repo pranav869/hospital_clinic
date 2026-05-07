@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS appointments (
 ALTER TABLE appointments ENABLE ROW LEVEL SECURITY;
 
 -- 3. Allow authenticated admins to read, update, delete all rows
+DROP POLICY IF EXISTS "Admins can manage appointments" ON appointments;
 CREATE POLICY "Admins can manage appointments"
   ON appointments
   FOR ALL
@@ -28,6 +29,7 @@ CREATE POLICY "Admins can manage appointments"
   WITH CHECK (true);
 
 -- 4. Allow anyone (the public booking form) to INSERT only
+DROP POLICY IF EXISTS "Public can submit appointments" ON appointments;
 CREATE POLICY "Public can submit appointments"
   ON appointments
   FOR INSERT
