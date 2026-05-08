@@ -4,7 +4,7 @@ import { clinicInfo } from '@/data/siteData';
 
 export const metadata = {
   title: 'Contact Us',
-  description: 'Get clinic address, timings, map, phone, and email details for Astera Clinic Chennai.'
+  description: 'Get address, timings, map, phone, and email details for Rana Clinic & Pharmacy, Kolathur, Chennai.'
 };
 
 export default function ContactPage() {
@@ -12,8 +12,8 @@ export default function ContactPage() {
     <section className="main-container py-12 sm:py-16 lg:py-20">
       <SectionHeading
         eyebrow="Contact"
-        title="Visit our Chennai clinic"
-        description="Conveniently located in Nungambakkam with easy appointment support on call and WhatsApp."
+        title="Visit Rana Clinic & Pharmacy"
+        description="Conveniently located on 40-feet Road, Vinayakapuram, Kolathur with easy appointment support on call and WhatsApp."
       />
 
       <div className="grid gap-6 sm:gap-8 grid-cols-1 lg:grid-cols-[1fr_1.4fr]">
@@ -26,8 +26,8 @@ export default function ContactPage() {
 
         <div className="overflow-hidden rounded-xl sm:rounded-2xl border border-sky-100 shadow-soft">
           <iframe
-            title="Astera Clinic Chennai Location"
-            src="https://maps.google.com/maps?q=nungambakkam%20chennai&t=&z=13&ie=UTF8&iwloc=&output=embed"
+            title="Rana Clinic & Pharmacy Kolathur Location"
+            src="https://maps.google.com/maps?q=vinayakapuram%20kolathur%20chennai&t=&z=13&ie=UTF8&iwloc=&output=embed"
             className="h-64 sm:h-80 lg:h-[420px] w-full"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"

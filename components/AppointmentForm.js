@@ -1,7 +1,6 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { supabase } from '@/lib/supabaseClient';
 import { clinicInfo } from '@/data/siteData';
 
 const initialState = {
@@ -16,8 +15,6 @@ export default function AppointmentForm({ compact = false }) {
   const [form, setForm] = useState(initialState);
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [submitError, setSubmitError] = useState('');
 
   const minDate = useMemo(() => new Date().toISOString().split('T')[0], []);
 
@@ -34,31 +31,14 @@ export default function AppointmentForm({ compact = false }) {
     return Object.keys(nextErrors).length === 0;
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     setSuccess(false);
-    setSubmitError('');
 
     if (!validate()) return;
 
-    setLoading(true);
-    const { error } = await supabase.from('appointments').insert({
-      full_name:      form.name.trim(),
-      phone:          form.phone.trim(),
-      department:     form.department,
-      preferred_date: form.date,
-      preferred_time: form.time,
-      status:         'pending'
-    });
-    setLoading(false);
-
-    if (error) {
-      console.error('Supabase insert error:', error);
-      setSubmitError(`Error: ${error.message}`);
-    } else {
-      setSuccess(true);
-      setForm(initialState);
-    }
+    setSuccess(true);
+    setForm(initialState);
   };
 
   return (
@@ -117,11 +97,10 @@ export default function AppointmentForm({ compact = false }) {
 
       <div className={`flex flex-col gap-2 sm:gap-3 ${compact ? '' : 'sm:flex-row'}`}>
         <button
-          className="rounded-lg sm:rounded-full bg-slate-900 px-5 sm:px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:opacity-60 disabled:cursor-not-allowed"
+          className="rounded-lg sm:rounded-full bg-slate-900 px-5 sm:px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-700"
           type="submit"
-          disabled={loading}
         >
-          {loading ? 'Submitting…' : 'Confirm Appointment'}
+          Confirm Appointment
         </button>
         <a
           className="rounded-lg sm:rounded-full border border-teal-200 px-5 sm:px-6 py-3 text-center text-sm font-semibold text-teal-700 transition hover:bg-teal-50"
@@ -134,7 +113,6 @@ export default function AppointmentForm({ compact = false }) {
       </div>
 
       {success ? <p className="text-sm font-medium text-teal-700">Thanks! Your request is submitted. Our care team will call you shortly.</p> : null}
-      {submitError ? <p className="text-sm font-medium text-rose-600">{submitError}</p> : null}
     </form>
   );
 }

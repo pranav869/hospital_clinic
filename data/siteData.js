@@ -1,15 +1,15 @@
 export const clinicInfo = {
-  name: 'Astera Multi-Speciality Clinic',
-  tagline: 'Advanced Healthcare You Can Trust',
-  phone: '+91 44 4012 8899',
-  phoneLink: 'tel:+914440128899',
-  whatsappLink: 'https://wa.me/919840012345?text=Hello%20Astera%20Clinic%2C%20I%20want%20to%20book%20an%20appointment.',
-  email: 'care@asteraclinic.in',
-  address: 'No. 128, Khader Nawaz Khan Road, Nungambakkam, Chennai, Tamil Nadu 600034',
-  timings: 'Mon - Sat: 7:00 AM - 9:00 PM | Sun: 8:00 AM - 2:00 PM',
-  yearsExperience: '18+ Years',
-  patientsServed: '1.2 Lakh+ Patients',
-  specialistDoctors: '28 Expert Doctors'
+  name: 'Rana Clinic & Pharmacy',
+  tagline: 'Trusted care and pharmacy support in Kolathur',
+  phone: '+91 9500004361',
+  phoneLink: 'tel:+919500004361',
+  whatsappLink: 'https://wa.me/919500004361?text=Hello%20Rana%20Clinic%20%26%20Pharmacy%2C%20I%20want%20to%20book%20an%20appointment.',
+  email: 'contact@ranaclinic.in',
+  address: '11 A Sri Venkateshya Nagar, 2nd Extension, 40-feet Road, Vinayakapuram, Kolathur, Chennai, Tamil Nadu 600099',
+  timings: 'Mon - Sat: 8:00 AM - 9:00 PM | Sun: 9:00 AM - 1:00 PM',
+  yearsExperience: '4.9/5 Rating',
+  patientsServed: '900+ Happy Customers',
+  specialistDoctors: '28 Customer Reviews'
 };
 
 export const specialities = [

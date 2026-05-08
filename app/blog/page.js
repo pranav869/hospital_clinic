@@ -4,7 +4,7 @@ import { blogPosts } from '@/data/siteData';
 
 export const metadata = {
   title: 'Health Blog',
-  description: 'Read trusted health articles from Astera Clinic specialists on preventive care and wellness.'
+  description: 'Read trusted health articles from Rana Clinic & Pharmacy specialists on preventive care and wellness.'
 };
 
 export default function BlogPage() {

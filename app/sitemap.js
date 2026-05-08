@@ -1,4 +1,4 @@
-const BASE_URL = 'https://www.asteraclinic.in';
+const BASE_URL = 'https://hospital-clinic-bice.vercel.app';
 
 export default function sitemap() {
   return [

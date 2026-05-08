@@ -5,7 +5,7 @@ import { clinicInfo } from '@/data/siteData';
 
 export const metadata = {
   title: 'Book Appointment',
-  description: 'Book an appointment online at Astera Clinic Chennai through secure form, WhatsApp, or direct call support.'
+  description: 'Book an appointment online at Rana Clinic & Pharmacy, Kolathur Chennai through secure form, WhatsApp, or direct call support.'
 };
 
 export default function AppointmentPage() {

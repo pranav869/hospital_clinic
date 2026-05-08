@@ -16,13 +16,13 @@ export default function HomePage() {
         <div className="main-container grid items-center gap-6 py-12 sm:gap-8 sm:py-16 lg:grid-cols-2 lg:gap-10 lg:py-24">
           <FadeIn>
             <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-sky-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
-              <BadgeCheck className="h-4 w-4" /> NABH-inspired Care Standards
+              <BadgeCheck className="h-4 w-4" /> Trusted neighborhood healthcare
             </p>
             <h1 className="text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
-              Advanced Healthcare You Can Trust
+              Rana Clinic & Pharmacy in Kolathur, Chennai
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">
-              Experience premium multi-speciality care in Chennai with expert doctors, advanced diagnostics, and patient-first treatment plans.
+              Rana Clinic & Pharmacy is a trusted healthcare destination in Chennai offering quality medications, expert healthcare services, and personalized patient support.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/appointment" className="rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-700">
@@ -138,8 +138,8 @@ export default function HomePage() {
         <div className="main-container">
           <SectionHeading
             eyebrow="Contact"
-            title="Visit our Chennai clinic"
-            description="Conveniently located in Nungambakkam with easy appointment support on call and WhatsApp."
+            title="Visit Rana Clinic & Pharmacy"
+            description="Conveniently located on 40-feet Road, Vinayakapuram, Kolathur with easy appointment support on call and WhatsApp."
           />
           <div className="grid gap-6 sm:gap-8 grid-cols-1 lg:grid-cols-[1fr_1.5fr]">
             <FadeIn className="glass-card space-y-4 p-6">
@@ -150,8 +150,8 @@ export default function HomePage() {
             </FadeIn>
             <FadeIn delay={0.08} className="overflow-hidden rounded-2xl border border-sky-100 shadow-soft">
               <iframe
-                title="Astera Clinic Chennai Location"
-                src="https://maps.google.com/maps?q=nungambakkam%20chennai&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                title="Rana Clinic & Pharmacy Kolathur Location"
+                src="https://maps.google.com/maps?q=vinayakapuram%20kolathur%20chennai&t=&z=14&ie=UTF8&iwloc=&output=embed"
                 className="h-72 sm:h-80 lg:h-[380px] w-full"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"

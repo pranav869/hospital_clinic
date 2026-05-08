@@ -22,7 +22,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 border-b border-sky-100/80 bg-white/90 backdrop-blur-lg">
       <div className="main-container flex h-16 sm:h-20 items-center justify-between">
         <Link href="/#home" className="text-base sm:text-lg font-semibold tracking-tight text-slate-900">
-          Astera <span className="gradient-text">Clinic</span>
+          Rana <span className="gradient-text">Clinic</span>
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex">

@@ -5,7 +5,7 @@ import { doctors } from '@/data/siteData';
 
 export const metadata = {
   title: 'About Us',
-  description: 'Learn about Astera Clinic, our mission, values, and specialist doctors serving Chennai with premium healthcare.'
+  description: 'Learn about Rana Clinic & Pharmacy, our mission, values, and trusted healthcare support in Kolathur, Chennai.'
 };
 
 export default function AboutPage() {
@@ -13,9 +13,9 @@ export default function AboutPage() {
     <>
       <section className="main-container py-12 sm:py-16 lg:py-20">
         <SectionHeading
-          eyebrow="About Astera"
-          title="Compassionate medicine built on clinical excellence"
-          description="Astera Multi-Speciality Clinic was founded to offer urban Chennai families reliable, premium-quality healthcare through evidence-based treatment and exceptional patient experience."
+          eyebrow="About Rana"
+          title="Your trusted neighborhood clinic and pharmacy"
+          description="Rana Clinic & Pharmacy was built to offer families in Kolathur reliable healthcare access, quality medicines, and patient-first guidance in one place."
         />
         <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {[

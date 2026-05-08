@@ -7,14 +7,13 @@ export default function Footer() {
       <div className="main-container grid gap-8 sm:gap-10 py-10 sm:py-12 lg:py-14 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         <div>
           <p className="text-base sm:text-lg font-semibold text-white">{clinicInfo.name}</p>
-          <p className="mt-2 sm:mt-3 text-xs sm:text-sm leading-relaxed text-slate-300">Premium multi-speciality care in Chennai focused on precision diagnosis and compassionate outcomes.</p>
+          <p className="mt-2 sm:mt-3 text-xs sm:text-sm leading-relaxed text-slate-300">Rana Clinic & Pharmacy is a trusted healthcare destination in Kolathur offering quality medicines, expert guidance, and patient-friendly care.</p>
         </div>
         <div>
           <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.16em] text-sky-300">Quick Links</p>
           <ul className="mt-3 sm:mt-4 space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
+            <li><Link className="transition hover:text-sky-300" href="/#home">Home</Link></li>
             <li><Link className="transition hover:text-sky-300" href="/#about">About</Link></li>
-            <li><Link className="transition hover:text-sky-300" href="/#services">Services</Link></li>
-            <li><Link className="transition hover:text-sky-300" href="/#doctors">Doctors</Link></li>
             <li><Link className="transition hover:text-sky-300" href="/#contact">Contact</Link></li>
           </ul>
         </div>

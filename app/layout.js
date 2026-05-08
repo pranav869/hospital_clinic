@@ -3,22 +3,22 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 
-const BASE_URL = 'https://www.asteraclinic.in';
+const BASE_URL = 'https://hospital-clinic-bice.vercel.app';
 
 export const metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: 'Astera Multi-Speciality Clinic Chennai | Book Appointment Online',
-    template: '%s | Astera Clinic Chennai'
+    default: 'Rana Clinic & Pharmacy Kolathur Chennai | Book Appointment Online',
+    template: '%s | Rana Clinic & Pharmacy'
   },
-  description: 'Book appointments with expert doctors at Astera Multi-Speciality Clinic in Chennai. Specialists in cardiology, dermatology, orthopaedics and more. WhatsApp booking available.',
+  description: 'Book appointments with trusted doctors at Rana Clinic & Pharmacy in Kolathur, Chennai. Quality medications, expert consultations, and WhatsApp booking available.',
   keywords: [
-    'multi-speciality clinic Chennai',
-    'best doctors in Chennai',
-    'clinic in Nungambakkam Chennai',
-    'doctor in Chennai',
-    'book doctor appointment Chennai',
-    'specialist hospital North Chennai',
+    'Rana Clinic & Pharmacy',
+    'pharmacy in Kolathur Chennai',
+    'clinic in Kolathur Chennai',
+    'book doctor appointment Kolathur',
+    'healthcare services Kolathur',
+    'trusted clinic Chennai',
     'cardiology Chennai',
     'dermatology clinic Chennai',
     'orthopaedic doctor Chennai',
@@ -35,25 +35,25 @@ export const metadata = {
     canonical: BASE_URL
   },
   openGraph: {
-    title: 'Astera Multi-Speciality Clinic Chennai | Book Appointment Online',
-    description: 'Book appointments with expert doctors at Astera Multi-Speciality Clinic in Chennai. Cardiology, dermatology, orthopaedics and more. WhatsApp booking available.',
+    title: 'Rana Clinic & Pharmacy Kolathur Chennai | Book Appointment Online',
+    description: 'Trusted healthcare destination in Kolathur, Chennai offering quality medications, doctor consultations, and WhatsApp booking support.',
     type: 'website',
     locale: 'en_IN',
     url: BASE_URL,
-    siteName: 'Astera Multi-Speciality Clinic',
+    siteName: 'Rana Clinic & Pharmacy',
     images: [
       {
         url: 'https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=1200&q=80',
         width: 1200,
         height: 630,
-        alt: 'Astera Multi-Speciality Clinic Chennai'
+        alt: 'Rana Clinic & Pharmacy Kolathur Chennai'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Astera Multi-Speciality Clinic Chennai',
-    description: 'Book appointments with expert doctors at Astera Clinic Chennai. Specialists in cardiology, dermatology, orthopaedics and more.',
+    title: 'Rana Clinic & Pharmacy Kolathur Chennai',
+    description: 'Trusted healthcare destination in Kolathur, Chennai for consultations, medicines, and appointment booking.',
     images: ['https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=1200&q=80']
   },
   verification: {
@@ -65,49 +65,49 @@ const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': ['MedicalClinic', 'LocalBusiness'],
   '@id': `${BASE_URL}/#clinic`,
-  name: 'Astera Multi-Speciality Clinic',
+  name: 'Rana Clinic & Pharmacy',
   url: BASE_URL,
   logo: `${BASE_URL}/logo.png`,
   image: 'https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=1400&q=80',
-  telephone: '+914440128899',
-  email: 'care@asteraclinic.in',
+  telephone: '+919500004361',
+  email: 'contact@ranaclinic.in',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'No. 128, Khader Nawaz Khan Road, Nungambakkam',
+    streetAddress: '11 A Sri Venkateshya Nagar, 2nd Extension, 40-feet Road, Vinayakapuram, Kolathur',
     addressLocality: 'Chennai',
     addressRegion: 'Tamil Nadu',
-    postalCode: '600034',
+    postalCode: '600099',
     addressCountry: 'IN'
   },
   geo: {
     '@type': 'GeoCoordinates',
-    latitude: 13.0569,
-    longitude: 80.2425
+    latitude: 13.125,
+    longitude: 80.212
   },
   openingHoursSpecification: [
     {
       '@type': 'OpeningHoursSpecification',
       dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-      opens: '07:00',
+      opens: '08:00',
       closes: '21:00'
     },
     {
       '@type': 'OpeningHoursSpecification',
       dayOfWeek: 'Sunday',
-      opens: '08:00',
-      closes: '14:00'
+      opens: '09:00',
+      closes: '13:00'
     }
   ],
   areaServed: [
     { '@type': 'City', name: 'Chennai' },
-    { '@type': 'AdministrativeArea', name: 'Nungambakkam' },
-    { '@type': 'AdministrativeArea', name: 'Egmore' },
-    { '@type': 'AdministrativeArea', name: 'Anna Nagar' },
-    { '@type': 'AdministrativeArea', name: 'Kilpauk' }
+    { '@type': 'AdministrativeArea', name: 'Kolathur' },
+    { '@type': 'AdministrativeArea', name: 'Vinayakapuram' },
+    { '@type': 'AdministrativeArea', name: 'Perambur' },
+    { '@type': 'AdministrativeArea', name: 'Retteri' }
   ],
   medicalSpecialty: ['Cardiology', 'Dermatology', 'General Medicine', 'Orthopaedics', 'Paediatrics', 'ENT'],
   priceRange: '₹₹',
-  hasMap: 'https://maps.google.com/maps?q=nungambakkam+chennai',
+  hasMap: 'https://maps.google.com/maps?q=vinayakapuram+kolathur+chennai',
   sameAs: [BASE_URL]
 };
 
@@ -160,26 +160,26 @@ const faqSchema = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: 'How do I book an appointment at Astera Clinic Chennai?',
+      name: 'How do I book an appointment at Rana Clinic & Pharmacy?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'You can book an appointment at Astera Multi-Speciality Clinic Chennai by filling the online form on our website, calling us at +91 44 4012 8899, or sending a WhatsApp message. Same-day slots are available for select departments.'
+        text: 'You can book an appointment at Rana Clinic & Pharmacy by filling the online form on our website, calling us at +91 9500004361, or sending a WhatsApp message. Same-day slots are available for select departments.'
       }
     },
     {
       '@type': 'Question',
-      name: 'What specialist doctors are available at Astera Clinic?',
+      name: 'What services are available at Rana Clinic & Pharmacy?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Astera Clinic has specialist doctors in Cardiology, Dermatology, General Medicine, Orthopaedics, Paediatrics, and ENT. All consultants have 10+ years of experience.'
+        text: 'Rana Clinic & Pharmacy offers specialist support in Cardiology, Dermatology, General Medicine, Orthopaedics, Paediatrics, and ENT along with pharmacy guidance and follow-up care.'
       }
     },
     {
       '@type': 'Question',
-      name: 'Where is Astera Multi-Speciality Clinic located in Chennai?',
+      name: 'Where is Rana Clinic & Pharmacy located in Chennai?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Astera Clinic is located at No. 128, Khader Nawaz Khan Road, Nungambakkam, Chennai, Tamil Nadu 600034. We are easily accessible from Anna Nagar, Egmore, Kilpauk and central Chennai.'
+        text: 'Rana Clinic & Pharmacy is located at 11 A Sri Venkateshya Nagar, 2nd Extension, 40-feet Road, Vinayakapuram, Kolathur, Chennai, Tamil Nadu 600099.'
       }
     },
     {
@@ -187,7 +187,7 @@ const faqSchema = {
       name: 'What are the clinic timings?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Astera Clinic is open Monday to Saturday from 7:00 AM to 9:00 PM, and on Sundays from 8:00 AM to 2:00 PM.'
+        text: 'Rana Clinic & Pharmacy is open Monday to Saturday from 8:00 AM to 9:00 PM, and on Sundays from 9:00 AM to 1:00 PM.'
       }
     },
     {

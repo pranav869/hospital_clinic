@@ -5,7 +5,7 @@ import { testimonials } from '@/data/siteData';
 
 export const metadata = {
   title: 'Patient Testimonials',
-  description: 'Read patient reviews and experiences about Astera Multi-Speciality Clinic, Chennai.'
+  description: 'Read patient reviews and experiences about Rana Clinic & Pharmacy, Kolathur Chennai.'
 };
 
 export default function TestimonialsPage() {

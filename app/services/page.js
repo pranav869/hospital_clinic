@@ -5,7 +5,7 @@ import { specialities } from '@/data/siteData';
 
 export const metadata = {
   title: 'Services',
-  description: 'Explore cardiology, dermatology, general medicine, orthopaedics, paediatrics and ENT services at Astera Clinic Chennai.'
+  description: 'Explore cardiology, dermatology, general medicine, orthopaedics, paediatrics and ENT services at Rana Clinic & Pharmacy, Kolathur Chennai.'
 };
 
 export default function ServicesPage() {

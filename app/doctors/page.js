@@ -5,7 +5,7 @@ import { doctors } from '@/data/siteData';
 
 export const metadata = {
   title: 'Doctors',
-  description: 'Meet expert doctors at Astera Multi-Speciality Clinic, Chennai with detailed profiles and consultation timings.'
+  description: 'Meet expert doctors at Rana Clinic & Pharmacy, Kolathur Chennai with detailed profiles and consultation timings.'
 };
 
 export default function DoctorsPage() {
